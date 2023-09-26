@@ -10,6 +10,40 @@ namespace TP_Principal_G4
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Raza>().HasData(
+                new Raza
+                {
+                    Id = 1,
+                    Nombre = "San bernardo"
+                },
+                new Raza
+                {
+                    Id = 2,
+                    Nombre = "Labrador retriever"
+                },
+                new Raza
+                {
+                    Id = 3,
+                    Nombre = "Gato persa"
+                },
+                new Raza
+                {
+                    Id = 4,
+                    Nombre = "Gato siamés"
+                }
+            );
+
+            modelBuilder.Entity<Refugio>().HasData(
+                new Refugio
+                {
+                    Id = 1,
+                    Nombre = "Santuario animal",
+                    RazonSocial = "Santuario animal S.A.",
+                    NombreDelResponsable = "Jorge",
+                    ApellidoDelResponsable = "Pérez"
+                }
+            );
         }
 
         public DbSet<Raza> Razas { get; set; }

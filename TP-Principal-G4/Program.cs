@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using TP_Principal_G4.Entities;
+using TP_Principal_G4.Repositories;
+using TP_Principal_G4.Repositories.Contracts;
 
 namespace TP_Principal_G4
 {
@@ -21,6 +24,8 @@ namespace TP_Principal_G4
                     options.UseSqlServer(builder.Configuration.GetConnectionString("TpPrincipalDb"));
                 }
             );
+
+            builder.Services.AddScoped<IAnimalRepository, AnimalRepository>();
 
             var app = builder.Build();
 

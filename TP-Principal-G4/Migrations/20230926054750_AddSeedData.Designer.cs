@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TP_Principal_G4;
 
@@ -11,9 +12,11 @@ using TP_Principal_G4;
 namespace TP_Principal_G4.Migrations
 {
     [DbContext(typeof(TpPrincipalG4Context))]
-    partial class TpPrincipalG4ContextModelSnapshot : ModelSnapshot
+    [Migration("20230926054750_AddSeedData")]
+    partial class AddSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,16 +111,6 @@ namespace TP_Principal_G4.Migrations
                         {
                             Id = 2,
                             Nombre = "Labrador retriever"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Nombre = "Gato persa"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Nombre = "Gato siamés"
                         });
                 });
 
