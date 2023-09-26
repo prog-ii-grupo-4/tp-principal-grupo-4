@@ -2,8 +2,11 @@
 
 namespace TP_Principal_G4.DTOs
 {
-    public class AnimalDTO
+    public class EditAnimalDTO
     {
+        [Required(ErrorMessage = "El campo 'Id' es obligatorio.")]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "El campo 'Nombre' es obligatorio.")]
         [MaxLength(100, ErrorMessage = "Máximo 100 caracteres.")]
         public string Nombre { get; set; } = string.Empty;
@@ -35,7 +38,7 @@ namespace TP_Principal_G4.DTOs
         public int Edad { get; set; }
 
         [Required(ErrorMessage = "El campo 'FechaDeIngreso' es obligatorio.")]
-        public DateTime FechaDeIngreso { get; set; }
+        public DateTime? FechaDeIngreso { get; set; }
 
         [Required(ErrorMessage = "El campo 'Id_Raza' es obligatorio.")]
         public int Id_Raza { get; set; }

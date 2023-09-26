@@ -24,7 +24,7 @@ namespace TP_Principal_G4.Entities
         [StringLength(20)]
         public string Especie { get; set; } = string.Empty;
         public int Edad { get; set; }
-        public DateTime FechaDeIngreso { get; set; }
+        public DateTime? FechaDeIngreso { get; set; }
         public int Id_Raza { get; set; }
         public int Id_Refugio { get; set; }
 

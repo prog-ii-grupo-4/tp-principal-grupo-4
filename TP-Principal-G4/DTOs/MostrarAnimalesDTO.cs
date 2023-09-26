@@ -11,7 +11,7 @@
         public string Color { get; set; } = string.Empty;
         public string Especie { get; set; } = string.Empty;
         public int Edad { get; set; }
-        public DateTime FechaDeIngreso { get; set; }
+        public DateTime? FechaDeIngreso { get; set; }
         public string Raza { get; set; } = string.Empty;
         public string Refugio { get; set; } = string.Empty;
     }
