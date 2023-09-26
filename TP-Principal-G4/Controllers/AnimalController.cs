@@ -10,7 +10,7 @@ using TP_Principal_G4.Repositories.Contracts;
 namespace TP_Principal_G4.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/animales")]
     public class AnimalController : ControllerBase
     {
         private readonly IAnimalRepository _animalRepository;
@@ -21,8 +21,7 @@ namespace TP_Principal_G4.Controllers
         }
 
         [HttpGet]
-        [Route("animales")]
-        public async Task<IActionResult> ListarAnimales()
+        public async Task<IActionResult> GetAllAnimales()
         {
             IEnumerable<MostrarAnimalesDTO> animales = await _animalRepository.GetAllAnimals();
 
@@ -36,7 +35,6 @@ namespace TP_Principal_G4.Controllers
 
         // POST /api/animales
         [HttpPost]
-        [Route("animales")]
         public async Task<IActionResult> Create([FromBody] CreateAnimalDTO animalDto)
         {
             try
@@ -58,7 +56,6 @@ namespace TP_Principal_G4.Controllers
         }
 
         [HttpPut]
-        [Route("animales")]
         public async Task<IActionResult> UpdateAnimal([FromBody] EditAnimalDTO animalDto)
         {
             try
@@ -77,6 +74,45 @@ namespace TP_Principal_G4.Controllers
 
                 return BadRequest(errorMessage + ex.Message);
             }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteAnimal([FromRoute] int id)
+        {
+            try
+            {
+                if(id > 0)
+                {
+                    await _animalRepository.Delete(id);
+                    return NoContent();
+                }
+
+                return BadRequest("El id de animal no es válido.");
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = "No se pudo eliminar al animal. Causa: ";
+
+                if (ex is SqlException | ex is DbUpdateException)
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    return BadRequest(errorMessage + ex.InnerException.Message);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+                return BadRequest(errorMessage + ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("razas")]
+        public async Task<IActionResult> GetAllRazas()
+        {
+            IEnumerable<Raza> razas = await _animalRepository.GetAllRazas();
+
+            if (razas.Any())
+                return Ok(razas);
+
+            return NotFound("No hay cargada ninguna raza en la base de datos.");
         }
 
         private Animal DtoToAnimal(CreateAnimalDTO animalDto)

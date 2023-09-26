@@ -26,6 +26,7 @@ namespace TP_Principal_G4
             );
 
             builder.Services.AddScoped<IAnimalRepository, AnimalRepository>();
+            builder.Services.AddScoped<IRefugioRepository, RefugioRepository>();
 
             var app = builder.Build();
 

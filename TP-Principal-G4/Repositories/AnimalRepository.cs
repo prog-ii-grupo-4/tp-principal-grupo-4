@@ -33,13 +33,11 @@ namespace TP_Principal_G4.Repositories
         {
             Animal? animal = await _context.Animales.FindAsync(id);
 
-            if(animal != null)
-            {
-                _context.Animales.Remove(animal);
-                await Save();
-            }
+            if(animal == null)
+                throw new AnimalException("El animal con id " + id + " no existe.");
 
-            throw new AnimalException("El animal con id " + id + " no existe.");
+            _context.Animales.Remove(animal);
+            await Save();
         }
 
         public async Task<Animal?> GetById(int id)
@@ -73,6 +71,7 @@ namespace TP_Principal_G4.Repositories
                     {
                         Id = animal.Id,
                         Nombre = animal.Nombre,
+                        Raza = animal.Raza.Nombre,
                         Genero = animal.Genero,
                         Peso = animal.Peso,
                         Altura = animal.Altura,
@@ -81,13 +80,17 @@ namespace TP_Principal_G4.Repositories
                         Edad = animal.Edad,
                         Especie = animal.Especie,
                         FechaDeIngreso = animal.FechaDeIngreso,
-                        Raza = animal.Raza.Nombre,
                         Refugio = animal.Refugio.Nombre
                     });
                 }
             }
 
             return mostrarAnimales;
+        }
+
+        public async Task<IEnumerable<Raza>> GetAllRazas()
+        {
+            return await _context.Razas.ToListAsync();
         }
     }
 }
