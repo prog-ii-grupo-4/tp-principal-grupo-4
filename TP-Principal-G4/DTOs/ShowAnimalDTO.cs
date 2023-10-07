@@ -1,6 +1,6 @@
 ﻿namespace TP_Principal_G4.DTOs
 {
-    public class MostrarAnimalesDTO
+    public class ShowAnimalDTO
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;

@@ -20,13 +20,7 @@ namespace TP_Principal_G4.Controllers
         public async Task<IActionResult> GetAllRefugios()
         {
             IEnumerable<Refugio> refugios = await _refugioRepository.GetAll();
-
-            if(refugios.Any())
-            {
-                return Ok(refugios);
-            }
-
-            return NotFound("No existen refugios.");
+            return Ok(refugios);
         }
     }
 }

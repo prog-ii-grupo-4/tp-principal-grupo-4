@@ -14,10 +14,14 @@ namespace TP_Principal_G4.Repositories
 
         public async Task Create(Animal entity)
         {
-            if(_context.Animales.Any(a => a.Nombre == entity.Nombre))
-            {
+            if(await CheckIfNombreExists(entity.Nombre))
                 throw new AnimalException("El animal llamado " + entity.Nombre + " ya existe.");
-            }
+
+            if(!await CheckIfRazaExists(entity.Id_Raza))
+                throw new AnimalException("La raza no existe.");
+
+            if (!await CheckIfRefugioExists(entity.Id_Refugio))
+                throw new AnimalException("El refugio no existe.");
 
             _context.Animales.Add(entity);
             await Save();
@@ -25,24 +29,59 @@ namespace TP_Principal_G4.Repositories
 
         public async Task Update(Animal entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
+            if (await _context.Animales.AnyAsync(a => a.Nombre.Equals(entity.Nombre) && !a.Id.Equals(entity.Id)))
+                throw new AnimalException("El animal llamado " + entity.Nombre + " ya existe.");
+
+            if (!await CheckIfRazaExists(entity.Id_Raza))
+                throw new AnimalException("La raza no existe.");
+
+            if (!await CheckIfRefugioExists(entity.Id_Refugio))
+                throw new AnimalException("El refugio no existe.");
+
+            _context.Animales.Update(entity);
             await Save();
         }
 
         public async Task Delete(int id)
         {
-            Animal? animal = await _context.Animales.FindAsync(id);
+            Animal? animal = await GetById(id);
 
-            if(animal == null)
-                throw new AnimalException("El animal con id " + id + " no existe.");
-
-            _context.Animales.Remove(animal);
-            await Save();
+            if(animal != null)
+            {
+                _context.Animales.Remove(animal);
+                await Save();
+            }
         }
 
         public async Task<Animal?> GetById(int id)
         {
             return await _context.Animales.FindAsync(id);
+        }
+
+        public async Task<ShowAnimalDTO> GetAnimal(int id)
+        {
+            Animal? animal = await _context.Animales.Include(a => a.Raza).Include(a => a.Refugio).FirstOrDefaultAsync();
+
+            if (animal != null)
+            {
+                return new ShowAnimalDTO()
+                {
+                    Id = id,
+                    Nombre = animal.Nombre,
+                    Raza = animal.Raza.Nombre,
+                    Genero = animal.Genero,
+                    Peso = animal.Peso,
+                    Altura = animal.Altura,
+                    Descripcion = animal.Descripcion,
+                    Color = animal.Color,
+                    Edad = animal.Edad,
+                    Especie = animal.Especie,
+                    FechaDeIngreso = animal.FechaDeIngreso,
+                    Refugio = animal.Refugio.Nombre
+                };
+            }
+
+            return null!;
         }
 
         public async Task<IEnumerable<Animal>> GetAll()
@@ -57,17 +96,17 @@ namespace TP_Principal_G4.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<MostrarAnimalesDTO>> GetAllAnimals()
+        public async Task<IEnumerable<ShowAnimalDTO>> GetAllAnimals()
         {
             IEnumerable<Animal> animales = await this.GetAll();
-            List<MostrarAnimalesDTO> mostrarAnimales = new List<MostrarAnimalesDTO>();
+            List<ShowAnimalDTO> mostrarAnimales = new List<ShowAnimalDTO>();
 
             if (animales.Count() > 0)
             {
                 
                 foreach(var animal in animales)
                 {
-                    mostrarAnimales.Add(new MostrarAnimalesDTO
+                    mostrarAnimales.Add(new ShowAnimalDTO
                     {
                         Id = animal.Id,
                         Nombre = animal.Nombre,
@@ -91,6 +130,21 @@ namespace TP_Principal_G4.Repositories
         public async Task<IEnumerable<Raza>> GetAllRazas()
         {
             return await _context.Razas.ToListAsync();
+        }
+
+        private async Task<bool> CheckIfNombreExists(string nombre)
+        {
+            return await _context.Animales.AnyAsync(a => a.Nombre == nombre);
+        }
+
+        private async Task<bool> CheckIfRazaExists(int razaId)
+        {
+            return await _context.Razas.AnyAsync(r => r.Id == razaId);
+        }
+
+        private async Task<bool> CheckIfRefugioExists(int refugioId)
+        {
+            return await _context.Refugios.AnyAsync(r => r.Id == refugioId);
         }
     }
 }

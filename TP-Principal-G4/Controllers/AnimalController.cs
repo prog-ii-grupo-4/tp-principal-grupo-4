@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using TP_Principal_G4.DTOs;
 using TP_Principal_G4.Entities;
+using TP_Principal_G4.Exceptions;
 using TP_Principal_G4.Repositories;
 using TP_Principal_G4.Repositories.Contracts;
 
@@ -20,102 +22,99 @@ namespace TP_Principal_G4.Controllers
             _animalRepository = animalRepository;
         }
 
+        // GET /api/animales/{id}
         [HttpGet]
-        public async Task<IActionResult> GetAllAnimales()
+        [Route("{id}")]
+        public async Task<IActionResult> GetAnimal([FromRoute] int id)
         {
-            IEnumerable<MostrarAnimalesDTO> animales = await _animalRepository.GetAllAnimals();
+            ShowAnimalDTO animal = await _animalRepository.GetAnimal(id);
 
-            if(animales.Count() > 0)
-            {
-                return Ok(animales);
-            }
+            if (animal != null)
+                return Ok(animal);
 
-            return NotFound("No hay ningún animal que mostrar.");
+            return NotFound();
+        }
+
+        // GET /api/animales
+        [HttpGet]
+        public async Task<IActionResult> GetAnimales()
+        {
+            IEnumerable<ShowAnimalDTO> animales = await _animalRepository.GetAllAnimals();
+            return Ok(animales);
         }
 
         // POST /api/animales
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateAnimalDTO animalDto)
+        public async Task<IActionResult> CreateAnimal([FromBody] AnimalDTO animalDto)
         {
             try
             {
-                await _animalRepository.Create(this.DtoToAnimal(animalDto));
-                return Ok("Animal creado exitosamente.");
+                Animal animal = this.CreateDtoToAnimal(animalDto);
+                await _animalRepository.Create(animal);
+
+                return CreatedAtAction(nameof(GetAnimal), new { id = animal.Id }, await _animalRepository.GetAnimal(animal.Id));
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                string errorMessage = "Ocurrió un problema al crear el animal. Causa: ";
+                if(ex is AnimalException)
+                    return BadRequest(ex.Message);
 
-                if(ex is SqlException | ex is DbUpdateException)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    return BadRequest(errorMessage + ex.InnerException.Message);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-                return BadRequest(errorMessage + ex.Message);
+                return StatusCode(500, "Ocurrió un error al crear el animal.");
             }
         }
 
+        // PUT /api/animales/{id}
         [HttpPut]
-        public async Task<IActionResult> UpdateAnimal([FromBody] EditAnimalDTO animalDto)
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateAnimal([FromRoute] int id, [FromBody] AnimalDTO animalDto)
         {
             try
             {
-                await _animalRepository.Update(this.EditAnimalDtoToAnimal(animalDto));
-                return Ok("El animal " + animalDto.Nombre + " con id '" + animalDto.Id + "' fue editado exitosamente.");
+                Animal? animalToUpdate = await _animalRepository.GetById(id);
+                
+                if (animalToUpdate is null)
+                  return NotFound();
+
+                await _animalRepository.Update(this.EditDtoToAnimal(id, animalDto, animalToUpdate));
+                return NoContent();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                string errorMessage = "Ocurrió un problema al editar el animal. Causa: ";
+                if(ex is AnimalException)
+                    return BadRequest(ex.Message);
 
-                if (ex is SqlException | ex is DbUpdateException)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    return BadRequest(errorMessage + ex.InnerException.Message);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-                return BadRequest(errorMessage + ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
+        // DELETE /api/animales/{id}
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteAnimal([FromRoute] int id)
         {
             try
             {
-                if(id > 0)
-                {
-                    await _animalRepository.Delete(id);
-                    return NoContent();
-                }
+                if (await _animalRepository.GetById(id) is null)
+                    return NotFound();
 
-                return BadRequest("El id de animal no es válido.");
+                await _animalRepository.Delete(id);
+                return NoContent();
             }
-            catch (Exception ex)
+            catch
             {
-                string errorMessage = "No se pudo eliminar al animal. Causa: ";
-
-                if (ex is SqlException | ex is DbUpdateException)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    return BadRequest(errorMessage + ex.InnerException.Message);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-                return BadRequest(errorMessage + ex.Message);
+                return StatusCode(500, "Se produjo un error al eliminar el animal.");
             }
         }
 
         [HttpGet]
         [Route("razas")]
-        public async Task<IActionResult> GetAllRazas()
+        public async Task<IActionResult> GetRazas()
         {
             IEnumerable<Raza> razas = await _animalRepository.GetAllRazas();
-
-            if (razas.Any())
-                return Ok(razas);
-
-            return NotFound("No hay cargada ninguna raza en la base de datos.");
+            return Ok(razas);
         }
 
-        private Animal DtoToAnimal(CreateAnimalDTO animalDto)
+        private Animal CreateDtoToAnimal(AnimalDTO animalDto)
         {
             return new Animal
             {
@@ -129,27 +128,26 @@ namespace TP_Principal_G4.Controllers
                 Especie = animalDto.Especie,
                 FechaDeIngreso = animalDto.FechaDeIngreso,
                 Id_Raza = animalDto.Id_Raza,
-                Id_Refugio = animalDto.Id_Refugio,
+                Id_Refugio = animalDto.Id_Refugio
             };
         }
 
-        private Animal EditAnimalDtoToAnimal(EditAnimalDTO animalDto)
+        private Animal EditDtoToAnimal(int id, AnimalDTO animalDto, Animal animalToUpdate)
         {
-            return new Animal
-            {
-                Id = animalDto.Id,
-                Nombre = animalDto.Nombre,
-                Genero = animalDto.Genero,
-                Peso = animalDto.Peso,
-                Altura = animalDto.Altura,
-                Descripcion = animalDto.Descripcion,
-                Color = animalDto.Color,
-                Edad = animalDto.Edad,
-                Especie = animalDto.Especie,
-                FechaDeIngreso = animalDto.FechaDeIngreso,
-                Id_Raza = animalDto.Id_Raza,
-                Id_Refugio = animalDto.Id_Refugio,
-            };
+            animalToUpdate.Id = id;
+            animalToUpdate.Nombre = animalDto.Nombre;
+            animalToUpdate.Genero = animalDto.Genero;
+            animalToUpdate.Peso = animalDto.Peso;
+            animalToUpdate.Altura = animalDto.Altura;
+            animalToUpdate.Descripcion = animalDto.Descripcion;
+            animalToUpdate.Color = animalDto.Color;
+            animalToUpdate.Edad = animalDto.Edad;
+            animalToUpdate.Especie = animalDto.Especie;
+            animalToUpdate.FechaDeIngreso = animalDto.FechaDeIngreso;
+            animalToUpdate.Id_Raza = animalDto.Id_Raza;
+            animalToUpdate.Id_Refugio = animalDto.Id_Refugio;
+
+            return animalToUpdate;
         }
     }
 }
