@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Raza { get; set; } = string.Empty;
-        public string Genero { get; set; } = string.Empty;
+        public char Genero { get; set; }
         public int Peso { get; set; }
         public int Altura { get; set; }
         public string Descripcion { get; set; } = string.Empty;

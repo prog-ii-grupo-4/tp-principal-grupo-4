@@ -38,6 +38,5 @@ namespace TP_Principal_G4.Repositories
         {
             await _context.SaveChangesAsync();
         }
-
     }
 }

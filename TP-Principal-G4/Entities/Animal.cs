@@ -9,9 +9,7 @@ namespace TP_Principal_G4.Entities
 
         [StringLength(100)]
         public string Nombre { get; set; } = string.Empty;
-
-        [StringLength(10)]
-        public string Genero { get; set; } = string.Empty;
+        public char Genero { get; set; }
         public int Peso { get; set; }
         public int Altura { get; set; }
 

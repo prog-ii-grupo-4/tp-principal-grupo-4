@@ -39,7 +39,7 @@ namespace TP_Principal_G4.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAnimales()
         {
-            IEnumerable<ShowAnimalDTO> animales = await _animalRepository.GetAllAnimals();
+            IEnumerable<ShowAnimalDTO> animales = await _animalRepository.GetAllAnimales();
             return Ok(animales);
         }
 
@@ -106,6 +106,7 @@ namespace TP_Principal_G4.Controllers
             }
         }
 
+        // GET /api/animales/razas
         [HttpGet]
         [Route("razas")]
         public async Task<IActionResult> GetRazas()
@@ -114,12 +115,21 @@ namespace TP_Principal_G4.Controllers
             return Ok(razas);
         }
 
+        // GET /api/animales/buscar?color={color}&especie={especie}
+        [HttpGet]
+        [Route("buscar")]
+        public async Task<IActionResult> Search(string? color, string? especie)
+        {
+            IEnumerable<ShowAnimalDTO> animales = await _animalRepository.SearchAnimalesBy(color, especie);
+            return Ok(animales);
+        }
+
         private Animal CreateDtoToAnimal(AnimalDTO animalDto)
         {
             return new Animal
             {
                 Nombre = animalDto.Nombre,
-                Genero = animalDto.Genero,
+                Genero = char.ToUpper(animalDto.Genero),
                 Peso = animalDto.Peso,
                 Altura = animalDto.Altura,
                 Descripcion = animalDto.Descripcion,
@@ -136,7 +146,7 @@ namespace TP_Principal_G4.Controllers
         {
             animalToUpdate.Id = id;
             animalToUpdate.Nombre = animalDto.Nombre;
-            animalToUpdate.Genero = animalDto.Genero;
+            animalToUpdate.Genero = char.ToUpper(animalDto.Genero);
             animalToUpdate.Peso = animalDto.Peso;
             animalToUpdate.Altura = animalDto.Altura;
             animalToUpdate.Descripcion = animalDto.Descripcion;

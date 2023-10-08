@@ -11,8 +11,7 @@ namespace TP_Principal_G4.DTOs
         public string Nombre { get; set; } = string.Empty;
 
         [Required(ErrorMessage = AnimalValidation.REQUIRED_MESSAGE)]
-        [MaxLength(AnimalValidation.MAX_LENGTH_GENERO, ErrorMessage = AnimalValidation.MAX_LENGTH_GENERO_MESSAGE)]
-        public string Genero { get; set; } = string.Empty;
+        public char Genero { get; set; }
 
         [Required(ErrorMessage = AnimalValidation.REQUIRED_MESSAGE)]
         [Range(AnimalValidation.MIN_RANGE_PESO, AnimalValidation.MAX_RANGE_PESO, ErrorMessage = AnimalValidation.RANGE_PESO_MESSAGE)]

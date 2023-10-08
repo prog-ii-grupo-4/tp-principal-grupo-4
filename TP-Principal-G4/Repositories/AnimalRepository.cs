@@ -60,7 +60,7 @@ namespace TP_Principal_G4.Repositories
 
         public async Task<ShowAnimalDTO> GetAnimal(int id)
         {
-            Animal? animal = await _context.Animales.Include(a => a.Raza).Include(a => a.Refugio).FirstOrDefaultAsync();
+            Animal? animal = await _context.Animales.Include(a => a.Raza).Include(a => a.Refugio).FirstOrDefaultAsync(a => a.Id.Equals(id));
 
             if (animal != null)
             {
@@ -91,12 +91,47 @@ namespace TP_Principal_G4.Repositories
             return animales;
         }
 
+        public async Task<IEnumerable<ShowAnimalDTO>> SearchAnimalesBy(string? color, string? especie)
+        {
+            IQueryable<Animal> query = _context.Animales;
+
+            if (!string.IsNullOrEmpty(color))
+                query = query.Where(a => a.Color.Contains(color.Trim()));
+
+            if (!string.IsNullOrEmpty(especie))
+                query = query.Where(a => a.Especie.Contains(especie.Trim()));
+
+            List<Animal> animales = await query.Include(a => a.Raza).Include(a => a.Refugio).ToListAsync();
+            List<ShowAnimalDTO> animalesDTO = new List<ShowAnimalDTO>();
+
+            foreach(Animal animal in animales)
+            {
+                animalesDTO.Add(new ShowAnimalDTO()
+                {
+                    Id = animal.Id,
+                    Nombre = animal.Nombre,
+                    Raza = animal.Raza.Nombre,
+                    Genero = animal.Genero,
+                    Peso = animal.Peso,
+                    Altura = animal.Altura,
+                    Color = animal.Color,
+                    Edad = animal.Edad,
+                    Especie = animal.Especie,
+                    Descripcion = animal.Descripcion,
+                    FechaDeIngreso = animal.FechaDeIngreso,
+                    Refugio = animal.Refugio.Nombre
+                });
+            }
+
+            return animalesDTO;
+        }
+
         public async Task Save()
         {
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ShowAnimalDTO>> GetAllAnimals()
+        public async Task<IEnumerable<ShowAnimalDTO>> GetAllAnimales()
         {
             IEnumerable<Animal> animales = await this.GetAll();
             List<ShowAnimalDTO> mostrarAnimales = new List<ShowAnimalDTO>();
