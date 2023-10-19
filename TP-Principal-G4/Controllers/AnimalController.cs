@@ -129,7 +129,7 @@ namespace TP_Principal_G4.Controllers
             return new Animal
             {
                 Nombre = animalDto.Nombre,
-                Genero = char.ToUpper(animalDto.Genero),
+                Genero = char.ToUpper(Convert.ToChar(animalDto.Genero)),
                 Peso = animalDto.Peso,
                 Altura = animalDto.Altura,
                 Descripcion = animalDto.Descripcion,
@@ -146,7 +146,7 @@ namespace TP_Principal_G4.Controllers
         {
             animalToUpdate.Id = id;
             animalToUpdate.Nombre = animalDto.Nombre;
-            animalToUpdate.Genero = char.ToUpper(animalDto.Genero);
+            animalToUpdate.Genero = char.ToUpper(Convert.ToChar(animalDto.Genero));
             animalToUpdate.Peso = animalDto.Peso;
             animalToUpdate.Altura = animalDto.Altura;
             animalToUpdate.Descripcion = animalDto.Descripcion;

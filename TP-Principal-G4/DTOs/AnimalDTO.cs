@@ -11,7 +11,8 @@ namespace TP_Principal_G4.DTOs
         public string Nombre { get; set; } = string.Empty;
 
         [Required(ErrorMessage = AnimalValidation.REQUIRED_MESSAGE)]
-        public char Genero { get; set; }
+        [RegularExpression(AnimalValidation.REGEX_GENERO, ErrorMessage = AnimalValidation.GENERO_NOT_VALID)]
+        public string Genero { get; set; } = string.Empty;
 
         [Required(ErrorMessage = AnimalValidation.REQUIRED_MESSAGE)]
         [Range(AnimalValidation.MIN_RANGE_PESO, AnimalValidation.MAX_RANGE_PESO, ErrorMessage = AnimalValidation.RANGE_PESO_MESSAGE)]
@@ -33,6 +34,7 @@ namespace TP_Principal_G4.DTOs
         public string Especie { get; set; } = string.Empty;
 
         [Required(ErrorMessage = AnimalValidation.REQUIRED_MESSAGE)]
+        [Range(0, int.MaxValue, ErrorMessage = AnimalValidation.NUMBER_NOT_VALID)]
         public int Edad { get; set; }
 
         [Required(ErrorMessage = AnimalValidation.REQUIRED_MESSAGE)]

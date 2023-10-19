@@ -3,6 +3,7 @@
     internal class AnimalValidation
     {
         public const int MAX_LENGTH_NOMBRE = 100;
+        public const string REGEX_GENERO = "^h$|^m$|^H$|^M$";
         public const int MIN_RANGE_PESO = 1;
         public const int MAX_RANGE_PESO = 100;
         public const int MIN_RANGE_ALTURA = 1;
@@ -12,7 +13,9 @@
         public const int MAX_LENGTH_ESPECIE = 20;
 
         public const string REQUIRED_MESSAGE = "Este campo es obligatorio.";
+        public const string NUMBER_NOT_VALID = "Ingrese un número válido.";
         public const string MAX_LENGTH_NOMBRE_MESSAGE = "Máximo 100 caracteres.";
+        public const string GENERO_NOT_VALID = "El género debe ser H o M.";
         public const string RANGE_PESO_MESSAGE = "El peso debe estar entre 1 y 100 kg.";
         public const string RANGE_ALTURA_MESSAGE = "La altura debe estar entre 1 y 100 cm.";
         public const string MAX_LENGTH_DESCRIPCION_MESSAGE = "Máximo 200 caracteres.";
