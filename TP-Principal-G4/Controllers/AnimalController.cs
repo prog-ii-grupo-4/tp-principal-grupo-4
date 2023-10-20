@@ -59,7 +59,7 @@ namespace TP_Principal_G4.Controllers
                 if(ex is AnimalException)
                     return BadRequest(ex.Message);
 
-                return StatusCode(500, "Ocurrió un error al crear el animal.");
+                return BadRequest("Ocurrió un error al crear el animal.");
             }
         }
 
@@ -83,7 +83,7 @@ namespace TP_Principal_G4.Controllers
                 if(ex is AnimalException)
                     return BadRequest(ex.Message);
 
-                return StatusCode(500, ex.Message);
+                return BadRequest("Ocurrió un error al editar el animal.");
             }
         }
 
@@ -102,7 +102,7 @@ namespace TP_Principal_G4.Controllers
             }
             catch
             {
-                return StatusCode(500, "Se produjo un error al eliminar el animal.");
+                return BadRequest("Se produjo un error al eliminar el animal.");
             }
         }
 
