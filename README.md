@@ -94,6 +94,109 @@ Se han implementado validaciones en la clase ```AnimalDTO``` utilizando atributo
 
 Se han implementado tests unitarios utilizando la librería *xUnit* para verificar que se pueden realizar cada una de las operaciones CRUD de animales correctamente y que devuelve el código de respuesta esperado en cada caso. También se ha utilizado la librería *Entity Framework Core In Memory* para realizar las pruebas en una base de datos en memoria.
 
+## Historias de usuario
+
+Historias de usuario y sus criterios de aceptación basados en las operaciones que se pueden realizar en la API REST:
+
+
+**1. Crear un Animal**
+
+Título: Crear un nuevo animal en el sistema 
+
+Descripción: Como administrador del refugio de animales, quiero poder agregar un nuevo animal al sistema para que esté disponible para adopción. 
+
+*Criterios de Aceptación:*
+
+- Puedo hacer una solicitud para agregar un nuevo animal.
+- Debo proporcionar la información requerida, como nombre, raza, género, peso, altura, color, edad y fecha de ingreso del animal.
+- Si la solicitud es exitosa, el animal se agrega a la base de datos y está disponible para su adopción. 
+
+
+**2. Editar un Animal**
+
+Título: Editar la información de un animal existente
+
+Descripción: Como administrador del refugio de animales, quiero poder actualizar la información de un animal en el sistema si se producen cambios en sus datos.
+
+*Criterios de Aceptación:*
+
+- Puedo hacer una solicitud para editar la información de un animal existente.
+- Debo proporcionar la información actualizada, como nombre, raza, género, peso, altura, color, edad y fecha de ingreso del animal.
+- Si la solicitud es exitosa, la información del animal se actualiza en la base de datos.
+
+
+**3. Borrar un Animal**
+
+Título: Eliminar un animal del sistema
+
+Descripción: Como administrador del refugio de animales, quiero poder eliminar un animal del sistema si ya no está disponible para adopción.
+
+*Criterios de Aceptación:*
+
+- Puedo hacer una solicitud para eliminar un animal del sistema.
+- Si la solicitud es exitosa, el animal se elimina de la base de datos y ya no está disponible para adopción.
+
+
+**4. Listar Animales**
+
+Título: Ver una lista de todos los animales disponibles
+
+Descripción: Como usuario interesado en adopción, quiero poder ver una lista de todos los animales disponibles en el sistema para poder encontrar un animal que me interese.
+
+*Criterios de Aceptación:*
+
+- Puedo hacer una solicitud para obtener una lista de todos los animales disponibles.
+- Recibo una lista de animales con detalles como nombre, raza, género, peso, altura, color, edad y fecha de ingreso del animal.
+
+
+**5. Visualizar un Animal**
+
+Título: Ver los detalles de un animal específico
+
+Descripción: Como administrador del refugio de animales o usuario interesado en adopción, quiero poder ver los detalles de un animal específico en el sistema.
+
+*Criterios de Aceptación:*
+
+- Puedo hacer una solicitud para ver los detalles de un animal específico.
+- Recibo información detallada, como nombre, raza, género, peso, altura, color, edad y fecha de ingreso del animal.
+
+
+**6. Buscar Animales por Color y/o Especie**
+
+Título: Buscar animales por color y/o especie 
+
+Descripción: Como usuario interesado en adoptar un animal, quiero poder buscar animales por color y/o especie en el sistema para poder encontrar más fácilmente un animal que me interese.
+
+*Criterios de Aceptación:*
+
+- Puedo hacer una solicitud para buscar animales por color y/o especie.
+- Puedo proporcionar parámetros opcionales de color y especie para filtrar la lista de animales.
+- Recibo una lista de animales que coinciden con los criterios de búsqueda.
+
+
+**7. Listar Razas**
+
+Título: Ver una lista de razas de animales
+
+Descripción: Como administrador del refugio de animales o usuario interesado en adopción, quiero poder ver una lista de razas de animales predefinidas en el sistema para saber que razas puedo llegar a encontrar en el sistema.
+
+*Criterios de Aceptación:*
+
+- Puedo hacer una solicitud para obtener una lista de razas de animales predefinidas.
+- Recibo una lista de razas con detalles como nombre y características.
+
+
+**8. Listar Refugios**
+
+Título: Ver una lista de refugios
+
+Descripción: Como usuario interesado en adopción, quiero poder ver una lista de refugios de animales predefinidos en el sistema para saber dónde se encuentran los animales que voy a visualizar.
+
+*Criterios de Aceptación:*
+
+- Puedo hacer una solicitud para obtener una lista de refugios de animales predefinidos.
+- Recibo una lista de refugios con detalles como nombre, ubicación y descripción.
+
 ## Conclusiones
 
 En este trabajo práctico, se ha implementado con éxito un CRUD en C# utilizando ASP.NET Core para la gestión de animales. La aplicación sigue una estructura organizada, utiliza Entity Framework Core para interactuar con la base de datos y se han aplicado validaciones para garantizar la integridad de los datos ingresados por el usuario.
