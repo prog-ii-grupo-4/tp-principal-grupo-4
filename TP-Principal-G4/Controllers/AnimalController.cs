@@ -135,7 +135,7 @@ namespace TP_Principal_G4.Controllers
                 Descripcion = animalDto.Descripcion,
                 Color = animalDto.Color,
                 Edad = animalDto.Edad,
-                Especie = animalDto.Especie,
+                Especie = animalDto.Especie.ToLower(),
                 FechaDeIngreso = animalDto.FechaDeIngreso,
                 Id_Raza = animalDto.Id_Raza,
                 Id_Refugio = animalDto.Id_Refugio
@@ -152,7 +152,7 @@ namespace TP_Principal_G4.Controllers
             animalToUpdate.Descripcion = animalDto.Descripcion;
             animalToUpdate.Color = animalDto.Color;
             animalToUpdate.Edad = animalDto.Edad;
-            animalToUpdate.Especie = animalDto.Especie;
+            animalToUpdate.Especie = animalDto.Especie.ToLower();
             animalToUpdate.FechaDeIngreso = animalDto.FechaDeIngreso;
             animalToUpdate.Id_Raza = animalDto.Id_Raza;
             animalToUpdate.Id_Refugio = animalDto.Id_Refugio;

@@ -14,6 +14,7 @@
 
         public const string REQUIRED_MESSAGE = "Este campo es obligatorio.";
         public const string NUMBER_NOT_VALID = "Ingrese un número válido.";
+        public const string ESPECIE_NOT_VALID = "La especie del animal debe ser 'perro' o 'gato'.";
         public const string MAX_LENGTH_NOMBRE_MESSAGE = "Máximo 100 caracteres.";
         public const string GENERO_NOT_VALID = "El género debe ser H o M.";
         public const string RANGE_PESO_MESSAGE = "El peso debe estar entre 1 y 100 kg.";

@@ -256,5 +256,74 @@ namespace TP_Principal_G4.Test
             //Assert
             Assert.IsType<NotFoundResult>(data); // verifico que no encontró el id del animal enviado
         }
+
+        [Fact(DisplayName = "SearchAnimales_OK")]
+        public async void Task_Search_Animal_Return_OkResult()
+        {
+            //Arrange
+            AnimalController controller = new AnimalController(_animalRepository);
+            string color = "negro"; // color de los animales a buscar
+            string especie = "perro"; // especie de animales a buscar
+
+            //Act
+            var data = await controller.Search(color, especie);
+
+            //Assert
+            var okObjectResult = data as OkObjectResult;
+            Assert.NotNull(okObjectResult); // verifico que devuelve OK con los animales encontrados según los filtros
+
+            var animalesEncontrados = okObjectResult.Value as List<ShowAnimalDTO>;
+            Assert.NotNull(animalesEncontrados); // obtengo el listado de animales encontrados
+
+            // compruebo que la cantidad de animales encontrados cumple correctamente con los filtros de búsqueda
+            IEnumerable<ShowAnimalDTO> animalesEsperados = animalesEncontrados.Where(a => a.Color.Equals(color) && a.Especie.Equals(especie));
+            Assert.Equal(animalesEsperados.Count(), animalesEncontrados.Count());
+        }
+
+        [Fact(DisplayName = "SearchAnimalesByColor_OK")]
+        public async void Task_Search_Animal_By_Color_Return_OkResult()
+        {
+            //Arrange
+            AnimalController controller = new AnimalController(_animalRepository);
+            string color = "negro"; // color de los animales a buscar
+            string especie = string.Empty; // no especifico ninguna especie
+
+            //Act
+            var data = await controller.Search(color, especie);
+
+            //Assert
+            var okObjectResult = data as OkObjectResult;
+            Assert.NotNull(okObjectResult); // verifico que devuelve OK con los animales encontrados según los filtros
+
+            var animalesEncontrados = okObjectResult.Value as List<ShowAnimalDTO>;
+            Assert.NotNull(animalesEncontrados); // obtengo el listado de animales encontrados
+
+            // compruebo que la cantidad de animales encontrados son del color buscado
+            IEnumerable<ShowAnimalDTO> animalesEsperados = animalesEncontrados.Where(a => a.Color.Equals(color));
+            Assert.Equal(animalesEsperados.Count(), animalesEncontrados.Count());
+        }
+
+        [Fact(DisplayName = "SearchAnimalesByEspecie_OK")]
+        public async void Task_Search_Animal_By_Especie_Return_OkResult()
+        {
+            //Arrange
+            AnimalController controller = new AnimalController(_animalRepository);
+            string color = string.Empty; // no especifico ningún color
+            string especie = "perro"; // especie de animales a buscar
+
+            //Act
+            var data = await controller.Search(color, especie);
+
+            //Assert
+            var okObjectResult = data as OkObjectResult;
+            Assert.NotNull(okObjectResult); // verifico que devuelve OK con los animales encontrados según los filtros
+
+            var animalesEncontrados = okObjectResult.Value as List<ShowAnimalDTO>;
+            Assert.NotNull(animalesEncontrados); // obtengo el listado de animales encontrados
+
+            // compruebo que la cantidad de animales encontrados son de la especie buscada
+            IEnumerable<ShowAnimalDTO> animalesEsperados = animalesEncontrados.Where(a => a.Especie.Equals(especie));
+            Assert.Equal(animalesEsperados.Count(), animalesEncontrados.Count());
+        }
     }
 }

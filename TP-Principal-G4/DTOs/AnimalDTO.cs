@@ -31,6 +31,7 @@ namespace TP_Principal_G4.DTOs
 
         [Required(ErrorMessage = AnimalValidation.REQUIRED_MESSAGE)]
         [MaxLength(AnimalValidation.MAX_LENGTH_ESPECIE, ErrorMessage = AnimalValidation.MAX_LENGTH_ESPECIE_MESSAGE)]
+        [IsEspecie(AnimalValidation.ESPECIE_NOT_VALID)]
         public string Especie { get; set; } = string.Empty;
 
         [Required(ErrorMessage = AnimalValidation.REQUIRED_MESSAGE)]
