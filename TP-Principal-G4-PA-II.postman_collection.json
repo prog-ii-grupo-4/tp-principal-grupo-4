@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "26c46f6c-b758-49e1-bead-10aea7c2020e",
+		"name": "TP-Principal-G4-PA-II",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "2818514"
+	},
+	"item": [
+		{
+			"name": "Listar animales",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:7167/api/animales"
+			},
+			"response": []
+		},
+		{
+			"name": "Crear animal",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var current_timestamp = new Date();\r",
+							"postman.setEnvironmentVariable(\"current_timestamp\", current_timestamp.toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"luna\",\r\n    \"genero\": \"h\",\r\n    \"peso\": 10,\r\n    \"altura\": 25,\r\n    \"descripcion\": \"Es muy cariñosa.\",\r\n    \"color\": \"blanco\",\r\n    \"especie\": \"perro\",\r\n    \"edad\": 1,\r\n    \"fechaDeIngreso\": \"{{current_timestamp}}\",\r\n    \"id_Raza\": 3,\r\n    \"id_Refugio\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7167/api/animales"
+			},
+			"response": []
+		},
+		{
+			"name": "Editar animal",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var current_timestamp = new Date();\r",
+							"postman.setEnvironmentVariable(\"current_timestamp\", current_timestamp.toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"luna\",\r\n    \"genero\": \"h\",\r\n    \"peso\": 25,\r\n    \"altura\": 18,\r\n    \"descripcion\": \"Es muy cariñosa.\",\r\n    \"color\": \"blanco\",\r\n    \"especie\": \"perro\",\r\n    \"edad\": 4,\r\n    \"fechaDeIngreso\": \"2023-10-24T02:48:23.568Z\",\r\n    \"id_Raza\": 3,\r\n    \"id_Refugio\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7167/api/animales/3"
+			},
+			"response": []
+		},
+		{
+			"name": "Listar refugios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:7167/api/refugios"
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar animal",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "https://localhost:7167/api/animales/3"
+			},
+			"response": []
+		},
+		{
+			"name": "Listar razas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:7167/api/animales/razas"
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar animales",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7167/api/animales/buscar?color=blanco&especie=perro",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7167",
+					"path": [
+						"api",
+						"animales",
+						"buscar"
+					],
+					"query": [
+						{
+							"key": "color",
+							"value": "blanco",
+							"description": "Color del animal"
+						},
+						{
+							"key": "especie",
+							"value": "perro",
+							"description": "Especie del animal (perro o gato)"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

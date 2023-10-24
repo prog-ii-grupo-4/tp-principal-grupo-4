@@ -26,6 +26,10 @@ Para la generación de la base de datos SQL Server se ha utilizado el enfoque **
 
 > **NOTA:** primero se debe ejecutar el comando ```update-database``` mediante el Package Manager Console de Visual Studio para crear la base de datos.
 
+*DER*
+
+![Diagrama_BD](DER.png)
+
 A continuación se listan todas las operaciones que se pueden realizar:
 
 1. **Crear animal ->** POST https://localhost:7167/api/animales
