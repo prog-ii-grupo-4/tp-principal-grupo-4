@@ -1,5 +1,13 @@
 # Programación avanzada II - UNLaM 2023
+
 ## Trabajo Práctico Principal Grupo 4
+
+| Integrantes  |
+| ------------- |
+| Gustavo Vasquez Zurita |
+| Nicolás Lopiano |
+| Marcos Quispe Velásquez |
+| Verónica Parra Sandi |
 
 #### Tecnologías utilizadas:
 - ASP.NET 6 Web API
@@ -14,9 +22,9 @@ En este trabajo práctico, se presenta la implementación de un CRUD (Create, Re
 
 ## Arquitectura de la aplicación
 
-La aplicación es una API REST que consiste en un ABM de animales de refugios. Para la generación de la base de datos SQL Server se ha utilizado el enfoque **Code First** de Entity Framework, dónde primero se crean las clases correspondientes a cada entidad para que luego se puedan mapear como entidades de base de datos.
+Para la generación de la base de datos SQL Server se ha utilizado el enfoque **Code First** de Entity Framework, dónde primero se crean las clases correspondientes a cada entidad para que luego se puedan mapear como entidades de base de datos.
 
-**NOTA:** primero se debe ejecutar el comando ```update-database``` mediante el Package Manager Console de Visual Studio para crear la base de datos.
+> **NOTA:** primero se debe ejecutar el comando ```update-database``` mediante el Package Manager Console de Visual Studio para crear la base de datos.
 
 A continuación se listan todas las operaciones que se pueden realizar:
 
